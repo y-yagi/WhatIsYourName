@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import com.example.yaginuma.whatisyourname.R;
 import com.example.yaginuma.whatisyourname.service.PhotoService;
 import com.example.yaginuma.whatisyourname.service.ServiceGenerator;
+import com.example.yaginuma.whatisyourname.widget.ProgressDialogBuilder;
 
 import java.io.File;
 
@@ -139,7 +140,7 @@ public class ShowActivity extends AppCompatActivity
     }
 
     private void getImageInfo() {
-        mProgressDialog = ProgressDialogBuilder.build(this, body);
+        mProgressDialog = ProgressDialogBuilder.build(this, "Now Loading...");
         mProgressDialog.show();
         PhotoService service = ServiceGenerator.createService(PhotoService.class);
         File file = new File(mImageUri.getPath());

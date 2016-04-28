@@ -10,7 +10,12 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+
+        buildConfigField "String", "URL", "\"${project.property("url")}\""
+        buildConfigField "String", "USERNAME", "\"${project.property("username")}\""
+        buildConfigField "String", "PASSWORD", "\"${project.property("password")}\""
     }
+
     buildTypes {
         release {
             minifyEnabled false

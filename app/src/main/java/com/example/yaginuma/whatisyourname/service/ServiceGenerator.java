@@ -2,6 +2,8 @@ package com.example.yaginuma.whatisyourname.service;
 
 import android.util.Base64;
 
+import com.example.yaginuma.whatisyourname.BuildConfig;
+
 import java.io.IOException;
 
 import okhttp3.Interceptor;
@@ -17,7 +19,7 @@ public class ServiceGenerator {
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
     public static <S> S createService(Class<S> serviceClass) {
-        return createService(serviceClass, null, null, null);
+        return createService(serviceClass, BuildConfig.URL, BuildConfig.USERNAME, BuildConfig.PASSWORD);
     }
 
     public static <S> S createService(Class<S> serviceClass, String url, String username, String password) {
