@@ -1,5 +1,6 @@
 package com.example.yaginuma.whatisyourname.activity;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -35,6 +36,7 @@ public class ShowActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private Uri mImageUri;
+    private ProgressDialog mProgressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +139,8 @@ public class ShowActivity extends AppCompatActivity
     }
 
     private void getImageInfo() {
+        mProgressDialog = ProgressDialogBuilder.build(this, body);
+        mProgressDialog.show();
         PhotoService service = ServiceGenerator.createService(PhotoService.class);
         File file = new File(mImageUri.getPath());
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
@@ -147,12 +151,13 @@ public class ShowActivity extends AppCompatActivity
             @Override
             public void onResponse(Call<ResponseBody> call,
                                    Response<ResponseBody> response) {
+                mProgressDialog.dismiss();
                 Log.v("Upload", "success");
-                Log.v("debug", response.message());
             }
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                mProgressDialog.dismiss();
                 Log.e("Upload error:", t.getMessage());
             }
         });
