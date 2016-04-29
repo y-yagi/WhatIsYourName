@@ -67,6 +67,7 @@ public class ShowActivity extends AppCompatActivity
                 handleSendImage(intent);
             }
         }
+        getImageInfo();
     }
 
     @Override
@@ -77,7 +78,6 @@ public class ShowActivity extends AppCompatActivity
             mProgressDialog = null;
         }
     }
-
 
     @Override
     public void onBackPressed() {
