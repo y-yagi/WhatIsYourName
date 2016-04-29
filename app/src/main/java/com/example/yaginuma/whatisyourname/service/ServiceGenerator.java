@@ -11,6 +11,7 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by yaginuma on 16/04/10.
@@ -24,6 +25,7 @@ public class ServiceGenerator {
 
     public static <S> S createService(Class<S> serviceClass, String url, String username, String password) {
         Retrofit.Builder builder = new Retrofit.Builder()
+                .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(url);
 
         if (username != null && password != null) {

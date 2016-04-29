@@ -19,12 +19,14 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.example.yaginuma.whatisyourname.R;
+import com.example.yaginuma.whatisyourname.model.Label;
 import com.example.yaginuma.whatisyourname.service.PhotoService;
 import com.example.yaginuma.whatisyourname.service.ServiceGenerator;
 import com.example.yaginuma.whatisyourname.util.PathUtil;
 import com.example.yaginuma.whatisyourname.widget.ProgressDialogBuilder;
 
 import java.io.File;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -158,18 +160,21 @@ public class ShowActivity extends AppCompatActivity
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
-        Call<ResponseBody> call = service.getInfoFromFile(body);
-        call.enqueue(new Callback<ResponseBody>() {
+        Call<List<Label>> call = service.getInfoFromFile(body);
+        call.enqueue(new Callback<List<Label>>() {
             @Override
-            public void onResponse(Call<ResponseBody> call,
-                                   Response<ResponseBody> response) {
+            public void onResponse(Call<List<Label>> call,
+                                   Response<List<Label>> response) {
                 mProgressDialog.dismiss();
                 Log.v("Upload", "success");
-                Log.v("Get Data",response.message());
+                List<Label> labels = response.body();
+                for (Label label : labels) {
+                    Log.v("label", label.description);
+                }
             }
 
             @Override
-            public void onFailure(Call<ResponseBody> call, Throwable t) {
+            public void onFailure(Call<List<Label>> call, Throwable t) {
                 mProgressDialog.dismiss();
                 Log.e("Upload error:", t.getMessage());
             }
