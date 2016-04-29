@@ -7,4 +7,8 @@ public class Label {
      public String description;;
      public String mid;;
      public float score;
+
+     public String toSentence() {
+          return description + "(" + score + ")";
+     }
 }

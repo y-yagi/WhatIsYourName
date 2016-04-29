@@ -11,12 +11,12 @@ import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.yaginuma.whatisyourname.R;
 import com.example.yaginuma.whatisyourname.model.Label;
@@ -31,7 +31,6 @@ import java.util.List;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -58,15 +57,6 @@ public class ShowActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -148,7 +138,7 @@ public class ShowActivity extends AppCompatActivity
 
     private void handleSendImage(Intent intent) {
         mImageUri = intent.getParcelableExtra(Intent.EXTRA_STREAM);
-        ImageView imageView = (ImageView) findViewById(R.id.imageView);
+        ImageView imageView = (ImageView) findViewById(R.id.image_view);
         imageView.setImageURI(mImageUri);
     }
 
@@ -168,9 +158,13 @@ public class ShowActivity extends AppCompatActivity
                 mProgressDialog.dismiss();
                 Log.v("Upload", "success");
                 List<Label> labels = response.body();
+                TextView detailView = (TextView) findViewById(R.id.text_detail);
+                String detail = "";
+
                 for (Label label : labels) {
-                    Log.v("label", label.description);
+                    detail += label.toSentence() + "\n";
                 }
+                detailView.setText(detail);
             }
 
             @Override
