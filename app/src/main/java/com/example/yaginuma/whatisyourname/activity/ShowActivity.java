@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import com.example.yaginuma.whatisyourname.R;
 import com.example.yaginuma.whatisyourname.service.PhotoService;
 import com.example.yaginuma.whatisyourname.service.ServiceGenerator;
+import com.example.yaginuma.whatisyourname.util.PathUtil;
 import com.example.yaginuma.whatisyourname.widget.ProgressDialogBuilder;
 
 import java.io.File;
@@ -153,7 +154,7 @@ public class ShowActivity extends AppCompatActivity
         mProgressDialog = ProgressDialogBuilder.build(this, "Now Loading...");
         mProgressDialog.show();
         PhotoService service = ServiceGenerator.createService(PhotoService.class);
-        File file = new File(mImageUri.getPath());
+        File file = new File(PathUtil.getPath(this, mImageUri));
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
 
@@ -164,6 +165,7 @@ public class ShowActivity extends AppCompatActivity
                                    Response<ResponseBody> response) {
                 mProgressDialog.dismiss();
                 Log.v("Upload", "success");
+                Log.v("Get Data",response.message());
             }
 
             @Override
