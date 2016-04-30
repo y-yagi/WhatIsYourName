@@ -17,6 +17,7 @@ public class PathUtil {
         String[] columns = { MediaStore.Images.Media.DATA };
         Cursor cursor = contentResolver.query(uri, columns, null, null, null);
 
+        // add care of uri is not content
         if (cursor != null) {
             cursor.moveToFirst();
             path = cursor.getString(0);
