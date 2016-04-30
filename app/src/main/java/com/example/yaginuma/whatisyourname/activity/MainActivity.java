@@ -1,6 +1,9 @@
 package com.example.yaginuma.whatisyourname.activity;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.view.View;
@@ -12,11 +15,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.yaginuma.whatisyourname.R;
+import com.example.yaginuma.whatisyourname.util.PathUtil;
+import com.nbsp.materialfilepicker.MaterialFilePicker;
+import com.nbsp.materialfilepicker.ui.FilePickerActivity;
+
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private final static int FILE_PICKER_REQUEST_CODE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +40,7 @@ public class MainActivity extends AppCompatActivity
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                startFilePicker();
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
@@ -94,5 +106,28 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private void startFilePicker() {
+        new MaterialFilePicker()
+                .withActivity(this)
+                .withRequestCode(FILE_PICKER_REQUEST_CODE)
+                .withFilter(Pattern.compile(".*\\.jpe?g$")) // Filtering files and directories by file name using regexp
+                .start();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == FILE_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
+            String filePath = data.getStringExtra(FilePickerActivity.RESULT_FILE_PATH);
+
+            Intent intent = new Intent(this, ShowActivity.class);
+            intent.setAction(Intent.ACTION_SEND);
+            intent.setType("image/jpg");
+            intent.putExtra(Intent.EXTRA_STREAM, PathUtil.stringToUri(filePath));
+            startActivity(intent);
+        }
     }
 }

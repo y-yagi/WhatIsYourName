@@ -11,13 +11,22 @@ import android.provider.MediaStore;
  */
 public class PathUtil {
     public static String getPath(Context context, Uri uri) {
+        String path = uri.toString();
+
         ContentResolver contentResolver = context.getContentResolver();
         String[] columns = { MediaStore.Images.Media.DATA };
         Cursor cursor = contentResolver.query(uri, columns, null, null, null);
-        cursor.moveToFirst();
-        String path = cursor.getString(0);
-        cursor.close();
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+            path = cursor.getString(0);
+            cursor.close();
+        }
 
         return path;
+    }
+
+    public static Uri stringToUri(String str) {
+        return Uri.parse(str);
     }
 }
