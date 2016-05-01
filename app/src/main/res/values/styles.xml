@@ -28,6 +28,11 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
+    <style name="MainText">
+        <item name="android:textSize">@dimen/text_xlarge</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
     <style name="Border">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
