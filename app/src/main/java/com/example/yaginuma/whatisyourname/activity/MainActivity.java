@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view) {
                 startFilePicker();
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
 
