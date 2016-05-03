@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.yaginuma.whatisyourname.R;
 import com.example.yaginuma.whatisyourname.model.Label;
@@ -56,6 +58,8 @@ public class ShowActivity extends AppCompatActivity {
                 handleSendImage(intent);
             }
         }
+
+        setSelectionAction();
         getImageInfo();
     }
 
@@ -107,5 +111,40 @@ public class ShowActivity extends AppCompatActivity {
                 Log.e("Upload error:", t.getMessage());
             }
         });
+    }
+
+    private void setSelectionAction() {
+        TextView textView = (TextView) findViewById(R.id.text_detail);
+        if (textView != null) {
+            textView.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+                @Override
+                public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                    actionMode.getMenuInflater().inflate(R.menu.edit_text, menu);
+                    return true;
+                }
+
+                @Override
+                public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                    return false;
+                }
+
+                @Override
+                public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                    if (menuItem.getItemId() == R.id.action_toast) {
+                        TextView textView = (TextView) findViewById(R.id.text_detail);
+                        int selectionStart = textView.getSelectionStart();
+                        int selectionEnd = textView.getSelectionEnd();
+                        CharSequence selectedText = textView.getText().subSequence(selectionStart, selectionEnd);
+                        Toast.makeText(getApplicationContext(), selectedText, Toast.LENGTH_LONG).show();
+                        return true;
+                    }
+                    return false;
+                }
+
+                @Override
+                public void onDestroyActionMode(ActionMode actionMode) {
+                }
+            });
+        }
     }
 }

@@ -61,6 +61,7 @@
                 android:layout_marginLeft="@dimen/spacing"
                 android:layout_marginRight="@dimen/spacing"
                 android:layout_marginTop="4dp"
+                android:textIsSelectable="true"
                 android:singleLine="false"
                 android:layout_weight="1.58" />
 
