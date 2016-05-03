@@ -2,6 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/action_toast"
         android:title="Toast"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/ic_translator"
         android:showAsAction="always"/>
 </menu>
