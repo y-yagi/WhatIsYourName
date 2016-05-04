@@ -22,9 +22,11 @@ import android.widget.Toast;
 
 import com.example.yaginuma.whatisyourname.BuildConfig;
 import com.example.yaginuma.whatisyourname.R;
+import com.example.yaginuma.whatisyourname.model.Edict;
 import com.example.yaginuma.whatisyourname.model.Label;
 import com.example.yaginuma.whatisyourname.service.PhotoService;
 import com.example.yaginuma.whatisyourname.service.ServiceGenerator;
+import com.example.yaginuma.whatisyourname.service.TranslatorService;
 import com.example.yaginuma.whatisyourname.util.PathUtil;
 import com.example.yaginuma.whatisyourname.widget.ProgressDialogBuilder;
 
@@ -152,6 +154,34 @@ public class ShowActivity extends AppCompatActivity {
     }
 
     private void translate(String word) {
-      Toast.makeText(getApplicationContext(), word, Toast.LENGTH_LONG).show();
-    }
+      mProgressDialog.show();
+      TranslatorService service = ServiceGenerator.createService(TranslatorService.class, BuildConfig.TRANSLATE_API_URL);
+      Call<List<Edict>> call = service.edicts(word);
+      call.enqueue(new Callback<List<Edict>>() {
+          @Override
+          public void onResponse(Call<List<Edict>> call,
+                                 Response<List<Edict>> response) {
+              mProgressDialog.dismiss();
+              List<Edict> edicts = response.body();
+              String detail = "";
+
+              for (Edict edict: edicts) {
+                  detail += edict.japanese + "(" + edict.japanese_yomi + ")" + "\n";
+              }
+
+              if (detail.isEmpty()) {
+                  detail = "指定された単語は見つかりませんでした";
+              }
+              Toast.makeText(getApplicationContext(), detail, Toast.LENGTH_LONG).show();
+
+          }
+
+          @Override
+          public void onFailure(Call<List<Edict>> call, Throwable t) {
+              mProgressDialog.dismiss();
+              Toast.makeText(getApplicationContext(), "指定された単語は見つかりませんでした", Toast.LENGTH_LONG).show();
+              Log.e("Upload error:", t.getMessage());
+          }
+      });
+  }
 }
