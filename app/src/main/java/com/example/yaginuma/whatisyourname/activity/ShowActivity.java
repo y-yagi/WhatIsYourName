@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.yaginuma.whatisyourname.BuildConfig;
 import com.example.yaginuma.whatisyourname.R;
 import com.example.yaginuma.whatisyourname.model.Label;
 import com.example.yaginuma.whatisyourname.service.PhotoService;
@@ -48,6 +49,8 @@ public class ShowActivity extends AppCompatActivity {
         setContentView(R.layout.activity_show);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        mProgressDialog = ProgressDialogBuilder.build(this, "Now Loading...");
 
         Intent intent = getIntent();
         String action = intent.getAction();
@@ -79,9 +82,9 @@ public class ShowActivity extends AppCompatActivity {
     }
 
     private void getImageInfo() {
-        mProgressDialog = ProgressDialogBuilder.build(this, "Now Loading...");
         mProgressDialog.show();
-        PhotoService service = ServiceGenerator.createService(PhotoService.class);
+        PhotoService service = ServiceGenerator.createService(
+                PhotoService.class, BuildConfig.PHOTO_API_URL, BuildConfig.USERNAME, BuildConfig.PASSWORD);
         File file = new File(PathUtil.getPath(this, mImageUri));
         RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
         MultipartBody.Part body = MultipartBody.Part.createFormData("image", file.getName(), requestFile);
@@ -135,7 +138,7 @@ public class ShowActivity extends AppCompatActivity {
                         int selectionStart = textView.getSelectionStart();
                         int selectionEnd = textView.getSelectionEnd();
                         CharSequence selectedText = textView.getText().subSequence(selectionStart, selectionEnd);
-                        Toast.makeText(getApplicationContext(), selectedText, Toast.LENGTH_LONG).show();
+                        translate(selectedText.toString());
                         return true;
                     }
                     return false;
@@ -146,5 +149,9 @@ public class ShowActivity extends AppCompatActivity {
                 }
             });
         }
+    }
+
+    private void translate(String word) {
+      Toast.makeText(getApplicationContext(), word, Toast.LENGTH_LONG).show();
     }
 }

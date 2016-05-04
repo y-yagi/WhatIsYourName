@@ -20,8 +20,13 @@ public class ServiceGenerator {
     private static OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
     public static <S> S createService(Class<S> serviceClass) {
-        return createService(serviceClass, BuildConfig.URL, BuildConfig.USERNAME, BuildConfig.PASSWORD);
+        return createService(serviceClass, BuildConfig.PHOTO_API_URL, BuildConfig.USERNAME, BuildConfig.PASSWORD);
     }
+
+    public static <S> S createService(Class<S> serviceClass, String url) {
+        return createService(serviceClass, url, null, null);
+    }
+
 
     public static <S> S createService(Class<S> serviceClass, String url, String username, String password) {
         Retrofit.Builder builder = new Retrofit.Builder()

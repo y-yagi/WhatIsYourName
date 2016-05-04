@@ -11,7 +11,8 @@ android {
         versionCode 1
         versionName "1.0"
 
-        buildConfigField "String", "URL", "\"${project.property("url")}\""
+        buildConfigField "String", "PHOTO_API_URL", "\"${project.property("photo_api_url")}\""
+        buildConfigField "String", "TRANSLATE_API_URL", "\"${project.property("translate_api_url")}\""
         buildConfigField "String", "USERNAME", "\"${project.property("username")}\""
         buildConfigField "String", "PASSWORD", "\"${project.property("password")}\""
     }
