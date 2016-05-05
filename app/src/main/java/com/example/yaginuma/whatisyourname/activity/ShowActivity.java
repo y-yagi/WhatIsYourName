@@ -172,7 +172,7 @@ public class ShowActivity extends AppCompatActivity {
               if (detail.isEmpty()) {
                   detail = "指定された単語は見つかりませんでした";
               }
-              Toast.makeText(getApplicationContext(), detail, Toast.LENGTH_LONG).show();
+              Toast.makeText(getApplicationContext(), detail.trim(), Toast.LENGTH_LONG).show();
 
           }
 
