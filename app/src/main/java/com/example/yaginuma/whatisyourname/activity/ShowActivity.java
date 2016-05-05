@@ -101,8 +101,12 @@ public class ShowActivity extends AppCompatActivity {
                 TextView detailView = (TextView) findViewById(R.id.text_detail);
                 String detail = "";
 
-                for (Label label : labels) {
-                    detail += label.toSentence() + "\n";
+                if (labels != null) {
+                    for (Label label : labels) {
+                        detail += label.toSentence() + "\n";
+                    }
+                } else {
+                    detail = "ラベルは検出出来ませんでした";
                 }
 
                 if (detailView != null) {
