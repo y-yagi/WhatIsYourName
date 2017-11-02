@@ -2,6 +2,7 @@
 apply plugin: 'com.github.ben-manes.versions'
 buildscript {
     repositories {
+        google()
         jcenter()
     }
     dependencies {
@@ -28,6 +29,7 @@ dependencyUpdates.resolutionStrategy = {
 
 allprojects {
     repositories {
+        google()
         jcenter()
     }
 }
